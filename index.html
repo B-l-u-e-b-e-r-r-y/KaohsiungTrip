@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Kaohsiung Trip</title>	
+	<link rel="Shortcut Icon" type="image/x-icon" href="logo.png">
+	<link rel="stylesheet" href="style.css">
+	<link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Roboto'>
+	<link rel='stylesheet prefetch' href='https://use.fontawesome.com/releases/v5.0.13/css/all.css'>
+	<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css'>
+</head>
+<body>
+	<div id="app">
+	  <div class="fake_nav"></div>
+	  <div class="havefun">
+	    <div class="nav">
+	      <div class="logo" v-on:click="home()"><img src="https://hexschool.github.io/THE_F2E_Design/week2-filter/assets/logo.png"/></div>
+	      <div class="search">
+	        <div class="search_light"><i class="fas fa-search"></i>
+	          <input class="searchbar" v-model="search" placeholder="要去哪裡呢？"/>
+	        </div>
+	      </div>
+	    </div>
+	    <div class="bottom">
+	      <div class="left">
+	        <div class="search_phone">
+	          <div class="search_light_phone"><i class="fas fa-search"></i>
+	            <input class="searchbar_phone" v-model="search" placeholder="要去哪裡呢？"/>
+	          </div>
+	        </div>
+	        <div class="location">
+	          <p class="boldfont">地區<span class="plus">+</span><span class="minus">--</span></p>
+	          <form>
+	            <select name="YourLocation" v-model="loca_choose">
+	              <option v-for="location in location_data">{{location}}</option>
+	            </select>
+	          </form>
+	        </div>
+	        <div class="categories">
+	          <div class="boldfont">分類<span class="plus">+</span><span class="minus">--</span></div>
+	          <input type="checkbox" v-model="free"/>
+	          <label>免費參觀</label><br/>
+	          <input type="checkbox" v-model="allday"/>
+	          <label>全天候開放</label>
+	        </div>
+	      </div>
+	      <div class="right">
+	        <div class="info" v-if="detailmode == false"><span>顯示 </span><span class="purple">{{filtered_item.length}}</span><span> 個結果...</span></div>
+	        <div class="tag_area" v-if="detailmode == false">
+	          <div class="tag" v-if="loca_choose != ''">{{loca_choose}}<i class="far fa-times-circle" v-on:click="remove('loca')"></i></div>
+	          <div class="tag" v-if="search != ''">{{search}}<i class="far fa-times-circle" v-on:click="remove('s_word')"></i></div>
+	          <div class="tag" v-if="free != false">免費參觀<i class="far fa-times-circle" v-on:click="remove('free')"></i></div>
+	          <div class="tag" v-if="allday != ''">全天候開放<i class="far fa-times-circle" v-on:click="remove('allday')"></i></div>
+	        </div>
+	        <div class="items_dt" v-if="detailmode == true">
+	          <div class="nav_dt"><span class="purple" v-on:click="home()">首頁</span><span>/</span><span>{{detaildata.Name}}</span></div>
+	          <div class="texts_dt"><img v-bind:style="'background-image: url(' + detaildata.Picture1 + ')'"/>
+	            <div class="pdarea">
+	              <div class="title_dt">{{detaildata.Name}}</div>
+	              <div class="tag" v-if="detaildata.Ticketinfo == '免費參觀'">免費參觀</div>
+	              <div class="tag" v-if="detaildata.Opentime == '全天候開放'">全天候開放</div><br/>
+	              <div class="loca_dt"><i class="fas fa-map-marker-alt"></i><span>{{detaildata.Add}}</span></div>
+	              <div class="time_dt"><i class="far fa-calendar-alt"></i><span>{{detaildata.Opentime}}</span></div>
+	              <div class="content_dt">{{detaildata.Description}}</div>
+	              <div class="goback" v-on:click="refresh()">回上頁</div>
+	            </div>
+	          </div>
+	        </div>
+	        <div class="items" v-for="item in filtered_item" v-on:click="detail_mode(item)" v-if="detailmode == false"><img v-bind:style="'background-image: url(' + item.Picture1 + ')'"/>
+	          <div class="texts">
+	            <div class="title">{{item.Name}}</div>
+	            <div class="content">{{item.Description}}</div>
+	            <div class="tags" v-if="item.Ticketinfo == '免費參觀'">免費參觀</div>
+	            <div class="tags" v-if="item.Opentime == '全天候開放'">全天候開放</div><br/>
+	            <div class="loca"><i class="fas fa-map-marker-alt"></i><span>{{item.Add}}</span></div><br/>
+	            <div class="time"><i class="far fa-calendar-alt"></i><span>{{item.Opentime}}</span></div>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<script src='js/jquery-3.3.1.min.js'></script>
+	<script src='js/vue.min.js'></script>
+	<script src="js/main.js"></script>
+</body>
+</html>
